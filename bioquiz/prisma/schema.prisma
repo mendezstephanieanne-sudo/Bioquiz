@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int           @id @default(autoincrement())
+  name      String
+  email     String        @unique
+  password  String
+  createdAt DateTime      @default(now())
+
+  attempts  QuizAttempt[]
+}
+
+model Category {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  description String?
+
+  questions   Question[]
+  attempts    QuizAttempt[]
+}
+
+model Question {
+  id         Int         @id @default(autoincrement())
+  categoryId Int
+  question   String
+  difficulty String
+
+  category   Category   @relation(fields: [categoryId], references: [id])
+  choices    Choice[]
+  answers    Answer[]
+}
+
+model Choice {
+  id         Int       @id @default(autoincrement())
+  questionId Int
+  text       String
+  isCorrect  Boolean   @default(false)
+
+  question   Question  @relation(fields: [questionId], references: [id])
+  answers    Answer[]
+}
+
+model QuizAttempt {
+  id             Int       @id @default(autoincrement())
+  userId         Int
+  categoryId     Int
+  startedAt      DateTime  @default(now())
+  finishedAt     DateTime?
+  score          Int       @default(0)
+  totalQuestions Int
+  status         String    @default("IN_PROGRESS")
+
+  user           User      @relation(fields: [userId], references: [id])
+  category       Category  @relation(fields: [categoryId], references: [id])
+  answers        Answer[]
+}
+
+model Answer {
+  id         Int         @id @default(autoincrement())
+  attemptId  Int
+  questionId Int
+  choiceId   Int
+  isCorrect  Boolean
+
+  attempt    QuizAttempt @relation(fields: [attemptId], references: [id])
+  question   Question    @relation(fields: [questionId], references: [id])
+  choice     Choice      @relation(fields: [choiceId], references: [id])
+}

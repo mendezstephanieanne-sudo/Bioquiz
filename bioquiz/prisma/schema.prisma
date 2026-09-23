@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -35,6 +36,8 @@ model Question {
   category   Category   @relation(fields: [categoryId], references: [id])
   choices    Choice[]
   answers    Answer[]
+
+  @@index([categoryId])
 }
 
 model Choice {
@@ -45,6 +48,8 @@ model Choice {
 
   question   Question  @relation(fields: [questionId], references: [id])
   answers    Answer[]
+
+  @@index([questionId])
 }
 
 model QuizAttempt {
@@ -60,6 +65,10 @@ model QuizAttempt {
   user           User      @relation(fields: [userId], references: [id])
   category       Category  @relation(fields: [categoryId], references: [id])
   answers        Answer[]
+
+  @@index([userId])
+  @@index([categoryId])
+  @@index([startedAt])
 }
 
 model Answer {
@@ -72,4 +81,8 @@ model Answer {
   attempt    QuizAttempt @relation(fields: [attemptId], references: [id])
   question   Question    @relation(fields: [questionId], references: [id])
   choice     Choice      @relation(fields: [choiceId], references: [id])
+
+  @@index([attemptId])
+  @@index([questionId])
+  @@index([choiceId])
 }

@@ -9,13 +9,13 @@
     "lint": "eslint",
     "db:generate": "prisma generate",
     "db:migrate:deploy": "prisma migrate deploy",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "postinstall": "prisma skills sync || exit 0"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
     "bcryptjs": "^3.0.3",
     "next": "16.3.5",
-    "prisma": "^6.19.3",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
@@ -27,6 +27,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
+    "prisma": "^8.0.0-rc.17",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5"

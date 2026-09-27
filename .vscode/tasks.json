@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Remove selected Next.js cache",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Remove-Item -LiteralPath 'C:\\Users\\Admin\\OneDrive\\Desktop\\Bioquiz\\bioquiz\\.next' -Recurse -Force; if (Test-Path 'C:\\Users\\Admin\\OneDrive\\Desktop\\Bioquiz\\bioquiz\\.next') { exit 1 } else { Write-Output 'Removed .next cache.' }"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
